@@ -12,3 +12,4 @@ uvicorn
 faiss-cpu
 PyPDF2
 pymongo
+ python-multipart
