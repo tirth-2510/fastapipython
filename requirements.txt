@@ -1,0 +1,14 @@
+langchain_community
+langchain_groq
+langchain_google_genai
+langchain-milvus
+langchain
+typing_extensions
+python-dotenv
+langgraph
+Milvus
+fastapi
+uvicorn
+faiss-cpu
+PyPDF2
+
