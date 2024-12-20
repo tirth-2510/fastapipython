@@ -11,4 +11,4 @@ fastapi
 uvicorn
 faiss-cpu
 PyPDF2
-
+pymongo
