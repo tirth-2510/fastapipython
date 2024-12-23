@@ -36,8 +36,9 @@ client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 db = client["doc_bot"]
 ud_db = db["user_details"]
 
+db_uri = os.getenv("MILVUS_URI")
 
-URI = "http://localhost:19530/doc_bot"
+URI = f"{db_uri}/doc_bot"
 api_key = os.getenv("GROQ_API_KEY")
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
