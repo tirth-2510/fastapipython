@@ -4,7 +4,7 @@ import PyPDF2
 from fastapi import FastAPI, HTTPException, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_groq import ChatGroq
-from langchain_milvus import Milvus
+from langchain_milvus import Zilliz
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.prompts import PromptTemplate
@@ -36,9 +36,9 @@ client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 db = client["doc_bot"]
 ud_db = db["user_details"]
 
-db_uri = os.getenv("MILVUS_URI")
 
-URI = f"{db_uri}/doc_bot"
+URI = os.getenv("ZILLIZ_URI_ENDPOINT")
+TOKEN = os.getenv("ZILLIZ_TOKEN")
 api_key = os.getenv("GROQ_API_KEY")
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
@@ -100,10 +100,10 @@ def create_vector_store(chunks: list[str], document_id: str, file_id: list[str])
     else:
         collection_name = f"id_{document_id}"
         global vector_store
-        vector_store = Milvus.from_texts(
+        vector_store = Zilliz.from_texts(
             texts=chunks,
             embedding=embeddings,
-            connection_args={"uri": URI},
+            connection_args={"uri": URI, "token":TOKEN},
             collection_name=collection_name,
             ids=file_id,
             drop_old=False,
@@ -127,9 +127,9 @@ def chatbot(state: State):
         memory_store[session_key] = []
         return {"messages": "Goodbye! 😊"}
     
-    vector_store = Milvus(
+    vector_store = Zilliz(
         collection_name=document_id,
-        connection_args={"uri": URI},
+        connection_args={"uri": URI, "token":TOKEN},
         embedding_function=embeddings
     )
     
@@ -208,9 +208,9 @@ async def delete_file(document_id: str, file_name: str):
         file_index = result["user_files"].index(file_name)
         file_id = result["file_ids"][file_index]
         unique_id = [f"{file_name}_{i}" for i in range(file_id)]
-        vector_store = Milvus(
+        vector_store = Zilliz(
             collection_name=f"id_{document_id}",
-            connection_args={"uri": URI},
+            connection_args={"uri": URI, "token":TOKEN},
             embedding_function=embeddings
         )
         vector_store.delete(unique_id)
@@ -237,4 +237,4 @@ async def delete_file(document_id: str, file_name: str):
 # <--------------- MAIN --------------->
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server:app", host="192.168.29.21", port=8000, reload=True) 
+    uvicorn.run("zilliz:app", host="192.168.29.21", port=8000, reload=True) 
