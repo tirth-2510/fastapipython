@@ -234,7 +234,3 @@ async def delete_file(document_id: str, file_name: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting file: {str(e)}")
 
-# <--------------- MAIN --------------->
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("zilliz:app", host="192.168.29.21", port=8000, reload=True) 
