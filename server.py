@@ -15,6 +15,7 @@ from langgraph.graph.message import add_messages
 from typing import Annotated, Dict, List
 from typing_extensions import TypedDict
 from dotenv import load_dotenv
+import uvicorn
 
 load_dotenv()
 app = FastAPI()
@@ -215,7 +216,7 @@ async def delete_file(document_id: str, file_name: str):
             embedding_function=embeddings
         )
         vector_store.delete(unique_id)
-        
+
         # Remove File name
         ud_db.find_one_and_update(
             {"_id": ObjectId(document_id)},
@@ -235,8 +236,7 @@ async def delete_file(document_id: str, file_name: str):
         collection = client.get_collection_stats(f"id_{document_id}")
         if collection["row_count"] == 0:
             client.drop_collection(f"id_{document_id}")
-            
-        return {"message": "File deleted successfully."}
+        
+        return {"message": "File deleted successfully."} 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting file: {str(e)}")
-
