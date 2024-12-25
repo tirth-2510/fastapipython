@@ -9,6 +9,7 @@ langgraph
 Milvus
 fastapi
 uvicorn
+pymilvus
 faiss-cpu
 PyPDF2
 pymongo
