@@ -3,6 +3,7 @@ import io
 import PyPDF2
 from fastapi import FastAPI, HTTPException, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from pymilvus import MilvusClient
 from langchain_groq import ChatGroq
 from langchain_milvus import Zilliz
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
@@ -230,6 +231,11 @@ async def delete_file(document_id: str, file_name: str):
             {"_id": ObjectId(document_id)},
             {"$pull": {f"file_ids":None }},
         )
+        client = MilvusClient(uri=URI, token=TOKEN)
+        collection = client.get_collection_stats(f"id_{document_id}")
+        if collection["row_count"] == 0:
+            client.drop_collection(f"id_{document_id}")
+            
         return {"message": "File deleted successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting file: {str(e)}")
