@@ -64,9 +64,8 @@ prompt_template = PromptTemplate(
         1.Only answer questions directly related to the provided context. 
         If the question is outside the given context, seems irrelevant, or asks for external information (e.g., jokes, searches, general trivia, etc.), 
         respond only with: 'Sorry, I am unable to understand you question.😓'
-        2.Never mention, imply, or refer to the existence of any external documents, files, training sources,give hints about the source of your knowledge, or elaborate beyond the context provided. 
-        3.Limit your answers to a maximum of 3 concise lines. 
-        5.For questions that:
+        2.Never mention, imply, or refer to the existence of any external documents, files, training sources,give hints about the source of your knowledge, or elaborate beyond the context provided.
+        3.For questions that:
         - Reference a document or ask, "What is this document about?"
         - Request a joke, trivia, or external search etc. anything
         - Cannot be answered based on the context
@@ -135,10 +134,10 @@ def chatbot(state: State):
         embedding_function=embeddings
     )
     
-    docs = vector_store.similarity_search(user_input)
+    docs = vector_store.similarity_search(query=user_input, k=1)
+    context = docs[0].page_content
 
     if docs:
-        context = "\n\n".join([doc.page_content for doc in docs])
         history = "\n".join([f"{msg['role']}: {msg['content']}" for msg in memory_store[session_key]])
 
         try:
