@@ -53,5 +53,4 @@ async def chat(data: dict = Body(...)):
     document_id = data.get("document_id")
     if user_input.lower() in ["exit", "quit", "finish"]:
         return {"Goodbye!"}
-    response = chatbot(document_id, user_input)
-    return {"response": response}
+    return {"response": chatbot(document_id, user_input)}
