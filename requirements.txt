@@ -3,6 +3,7 @@ python-dotenv
 pymongo
 pymilvus
 langchain
+langchain-milvus
 PyPDF2
 uvicorn
 langchain-google-genai
