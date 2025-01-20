@@ -1,7 +1,11 @@
 fastapi
-groq
-langchain-milvus
-langchain-google-genai
 python-dotenv
+pymongo
+pymilvus
+langchain
+PyPDF2
 uvicorn
+zilliz
+langchain-google-genai
+groq
 python-multipart
