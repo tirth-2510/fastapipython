@@ -5,7 +5,6 @@ pymilvus
 langchain
 PyPDF2
 uvicorn
-zilliz
 langchain-google-genai
 groq
 python-multipart
