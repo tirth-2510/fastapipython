@@ -26,7 +26,7 @@ app.add_middleware(
 
 mongo_uri = os.getenv("MONGODB_URI")
 client = MongoClient(mongo_uri)
-db = client["doc_bot"]
+db = client["digibot"]
 ud_db = db["user_details"]
 
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=os.getenv("GOOGLE_API_KEY"))
